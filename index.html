@@ -2,23 +2,19 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#a9b0b8">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>🏙️ Поиск слов: Города</title>
-<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;700&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet" type="text/css">
 <style>
 :root{
-  /* Шрифты. Если Google Fonts недоступен (нет интернета, файл открыт офлайн),
-     браузер уходит в конец списка: раньше там стоял generic-шрифт cursive,
-     а в Windows это Comic Sans MS — игра выглядела чужеродно.
-     Теперь запасной вариант — обычный системный шрифт интерфейса. */
+
   --font-display:'Comfortaa','Nunito','Segoe UI',system-ui,sans-serif;
   --font-ui:'Nunito','Segoe UI',system-ui,sans-serif;
 
-  /* Палитра города: сталь, асфальт, янтарь */
   --sky1:#9aa2ab; --sky2:#dde2e8; --sky3:#bcc4cc; --sky4:#e9edf1; --sky5:#aab2bb;
   --steel:#3d4450; --steel-dark:#1c2128; --steel-light:#6a7280;
   --asphalt:#2b3037; --asphalt-dark:#14181d;
@@ -26,7 +22,6 @@
   --brick:#b5503a; --brick-dark:#7a3424;
   --card:#ffffffdd; --ink:#1e232a;
   --found:#3e5c7a; --found-dark:#2a4055;
-  --wrong:#c0503a;
   --text-strong:#1c2128;
 
   --sat: env(safe-area-inset-top, 0px);
@@ -62,11 +57,6 @@ body{
   100% {background-position:0% 50%;}
 }
 
-/* Фон главного экрана — ПОСТОЯННЫЙ слой, а не ::before.
-   Псевдоэлемент создавался и уничтожался при каждом входе в меню и выходе
-   из него, поэтому браузер каждый раз заново обращался к картинке
-   и декодировал её. Постоянный слой держит изображение привязанным к живому
-   элементу: оно грузится один раз за сессию, а меняется только прозрачность. */
 .menu-bg{
   position:fixed; inset:0;
   background-image: var(--menu-bg-image, none);
@@ -171,9 +161,6 @@ body.no-menu-bg.menu-active::after{ display: none; }
 h1,h2{font-family:var(--font-display); color:var(--text-strong); margin:.2em 0; position:relative; z-index:1; text-align:center; font-weight:700;}
 h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 1px 2px rgba(255,255,255,.6);}
 
-/* ============================================================
-   ЗАГОЛОВОК ГЛАВНОГО МЕНЮ — В ОДНУ ЛИНИЮ
-   ============================================================ */
 #menu h1{
   font-family:var(--font-display); font-weight:700;
   font-size:clamp(1.5rem, 6vw, 2.8rem); letter-spacing:.01em; line-height:1.1;
@@ -237,13 +224,10 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
 .icon-btn:hover{ background:#ffffff; border-color:var(--steel-dark); box-shadow:0 6px 14px rgba(28,33,40,.25); }
 .icon-btn:active{transform:scale(.93);}
 
-/* ============================================================
-   ЭКРАН УРОВНЕЙ: шапка закреплена, прокручивается только сетка
-   ============================================================ */
 #levels.screen.active{
   overflow:hidden; height:100%;
   flex-direction:column; gap:10px;
-  padding-bottom:12px;            /* место под тень кнопки «Назад» */
+  padding-bottom:12px;
   justify-content:flex-start;
 }
 .levels-sticky{
@@ -252,7 +236,7 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
 }
 .levels-scroll{
   flex:1; min-height:0; overflow-y:auto; overflow-x:hidden;
-  width:100%; padding:12px 10px; -webkit-overflow-scrolling:touch;  /* поля под звёздочки уровней */
+  width:100%; padding:12px 10px; -webkit-overflow-scrolling:touch;
   overscroll-behavior:contain;
 }
 .levels-sticky-bottom{ flex-shrink:0; margin-top:4px; }
@@ -298,9 +282,6 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
   50%    {box-shadow:0 5px 0 var(--steel-dark), 0 0 0 12px rgba(240,168,50,0);}
 }
 
-/* ---- Правка: на сенсорных и узких экранах пульсация доступных
-   уровней вызывала мерцание второго ряда кнопок при прокрутке.
-   Заменяем анимацию на статичную внутреннюю обводку. ---- */
 @media (pointer: coarse), (max-width: 819px){
   .level-btn.available{ animation:none; }
   .level-btn.available::before{
@@ -350,9 +331,6 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
 }
 .toggle:active{ transform:translateY(2px); box-shadow:0 1px 0 var(--steel-dark); }
 
-/* ============================================================
-   Шапка игрового экрана
-   ============================================================ */
 .game-header{
   display:flex; justify-content:space-between; align-items:center;
   width:100%; gap:14px; flex-shrink:0; padding:4px;
@@ -381,10 +359,7 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
 }
 
 .grid-wrap{flex:1; display:flex; align-items:center; justify-content:center; width:100%; min-height:0; position:relative;}
-/* Поле занимает всю доступную ширину, но не выше доступной высоты:
-   width/height 100% + aspect-ratio дают квадрат, а max-* ограничивают его
-   размером, который посчитал sizeGrid(). Так поле не вылезает за экран
-   ни в широком, ни в низком (горизонтальном) окне. */
+
 .grid{
   display:grid; grid-template-columns:repeat(12, 1fr); grid-template-rows:repeat(12, 1fr);
   gap:2px;
@@ -408,12 +383,10 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
   touch-action:none; -webkit-user-select:none; user-select:none;
   min-width:0; min-height:0; line-height:1;
 }
-/* ============================================================
-   ВЫДЕЛЕННЫЕ И НАЙДЕННЫЕ БУКВЫ — ПОВЫШЕННАЯ КОНТРАСТНОСТЬ
-   ============================================================ */
+
 .cell.selecting{
-  background:#ff8a00;                 /* яркий оранжевый, заметно темнее светлой клетки */
-  color:#000000;                      /* чистый чёрный текст */
+  background:#ff8a00;
+  color:#000000;
   transform:scale(1.10);
   box-shadow:0 0 0 2px #000000, 0 0 14px rgba(255,138,0,1);
   font-weight:900;
@@ -421,14 +394,14 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
   position:relative; z-index:2;
 }
 .cell.found{
-  background:linear-gradient(135deg, #0a2447 0%, #05142b 100%);  /* почти чёрный синий */
+  background:linear-gradient(135deg, #0a2447 0%, #05142b 100%);
   color:#ffffff;
   text-shadow:none;
   box-shadow:0 0 0 1px #000000, inset 0 0 0 1px rgba(255,255,255,.35);
   font-weight:900;
 }
 .cell.wrong{
-  background:#b3301a !important;       /* насыщенный красный */
+  background:#b3301a !important;
   color:#ffffff;
   box-shadow:0 0 0 2px #6e1c0e, 0 0 12px rgba(179,48,26,.8);
   animation:shakeCell .22s ease-in-out 2;
@@ -466,10 +439,6 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
 .side-panel{display:contents;}
 .panel-heading{display:none;}
 
-/* Обёртка «игровое поле + сервисная панель».
-   По умолчанию (телефон, планшет, узкий ПК) собственного бокса не создаёт:
-   панель просто встаёт под игровым полем. На широком ПК с мышью
-   превращается во flex-строку, и панель уезжает вправо от поля. */
 .game-body{display:contents;}
 
 .icon-btn.hint-btn{position:relative;}
@@ -568,26 +537,12 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
 }
 #shutdown button:active{transform:translateY(3px); box-shadow:0 2px 0 var(--amber-dark);}
 
-/* ============================================================
-   ПК С МЫШЬЮ, ВЕРТИКАЛЬНОЕ ОКНО (ширина <= высоты)
-   Справа панель уже не помещается — переносим её ПОД игровое
-   поле и центрируем обе части.
-   ============================================================ */
 @media (pointer: fine) and (orientation: portrait){
   #game.screen.active{ max-width: 820px; }
   #game .word-list{ max-height: 22vh; gap: 10px; padding: 2px; }
   #game .word-chip{ font-size: clamp(13px, 1.5vw, 19px); padding: 9px 16px; border-radius: 11px; }
 }
 
-/* ============================================================
-   ПК С МЫШЬЮ, ГОРИЗОНТАЛЬНОЕ ОКНО (ширина > высоты)
-   Поле слева, сервисная панель справа.
-   Высота панели равна высоте поля, а размеры всего игрового
-   (панель, чипы, шапка) считаются от фактического размера поля
-   через --gs — поэтому при уменьшении окна всё уменьшается
-   пропорционально, а не ломает раскладку.
-   --gs проставляет sizeGrid().
-   ============================================================ */
 @media (pointer: fine) and (orientation: landscape){
   #game.screen.active{
     display:flex; flex-direction:column;
@@ -596,7 +551,7 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
     align-items:center; overflow:hidden;
   }
   #game .game-header{ width:100%; flex-shrink:0; }
-  /* шапка тоже масштабируется вместе с полем */
+
   #game .game-header .icon-btn{
     min-width: clamp(40px, calc(var(--gs, 820px) * 0.088), 72px);
     height:    clamp(40px, calc(var(--gs, 820px) * 0.088), 72px);
@@ -615,7 +570,6 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
     right: clamp(-8px, calc(var(--gs, 820px) * -0.012), -4px);
   }
 
-  /* строка «поле + панель»: обе части выровнены по центру */
   #game .game-body{
     display:flex; flex-direction:row; align-items:center; justify-content:center;
     gap: clamp(12px, 2.2vw, 44px);
@@ -628,9 +582,9 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
   #game .side-panel{
     display:flex !important; flex-direction:column;
     flex:0 0 auto; align-self:center;
-    width: clamp(160px, 33%, 430px);    /* доля ширины, а не жёсткий размер */
-    max-width: var(--gs, 430px);        /* панель не шире, чем поле */
-    height: var(--gs, 100%);            /* высота панели = высоте поля */
+    width: clamp(160px, 33%, 430px);
+    max-width: var(--gs, 430px);
+    height: var(--gs, 100%);
     max-height:100%; min-height:0; overflow:hidden;
     gap: calc(var(--gs, 820px) * 0.024);
     padding: calc(var(--gs, 820px) * 0.034) calc(var(--gs, 820px) * 0.030);
@@ -678,9 +632,6 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
   }
 }
 
-/* ============================================================
-   АДАПТАЦИЯ ПОД МАЛЕНЬКИЕ ЭКРАНЫ
-   ============================================================ */
 @media (max-width: 600px){
   #app{padding:12px; padding-top:calc(12px + var(--sat)); padding-bottom:calc(12px + var(--sab));}
   .btn{font-size:1.15rem; min-height:58px; padding:16px 26px; max-width:340px;}
@@ -734,14 +685,12 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
 @media (orientation: landscape) and (max-height: 560px){
   #app{padding:8px; padding-top:calc(8px + var(--sat)); padding-bottom:calc(8px + var(--sab));}
 
-  /* Телефон в горизонтали: раскладка остаётся ВЕРТИКАЛЬНОЙ
-     (поле сверху, слова под ним) — просто всё компактнее. */
   #menu.screen.active{
     display: flex;
     flex-direction: column;
     gap: 8px;
     padding: 6px;
-    max-width: 560px;      /* кнопки не растягиваются на всю ширину окна */
+    max-width: 560px;
     justify-content: center;
   }
   #menu.screen.active h1{
@@ -794,8 +743,6 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
   .toast{ top:10%; font-size:.95rem; padding:10px 18px; }
 }
 
-/* Игровые правила короткого экрана — только для сенсорных устройств:
-   на ПК короткое широкое окно обслуживает раскладка «панель справа». */
 @media (pointer: coarse) and (orientation: landscape) and (max-height: 560px){
   #game.screen.active{
     display:flex; flex-direction:column; gap:6px; align-items:center;
@@ -821,7 +768,7 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
 
   #game .side-panel{ display:contents; }
   #game .panel-heading{ display:none; }
-  /* Слова — одна прокручиваемая строка, чтобы не съедать место у поля */
+
   #game .word-list{
     flex:0 0 auto; flex-wrap:nowrap;
     max-height:none;
@@ -842,11 +789,6 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
   #app{position:relative;}
 }
 
-/* ============================================================
-   ПЛАНШЕТЫ (700+ px, touch, высота от 561px) — увеличенные размеры
-   интерфейса. Раскладка ВСЕГДА вертикальная: поле сверху, слова
-   под ним, в любой ориентации экрана.
-   ============================================================ */
 @media (min-width: 700px) and (pointer: coarse) and (min-height: 561px){
   #app{
     padding: 24px;
@@ -897,8 +839,6 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
 
   .confirm-actions .btn{ font-size: 1.2rem; min-height: 64px; max-width: 100%; }
 
-  /* --- игровой экран: раскладка ВСЕГДА вертикальная
-         (поле сверху, слова под ним), в любой ориентации --- */
   #game.screen.active{ gap: 16px; max-width: 820px; }
   .game-header{ gap: 16px; padding: 6px; }
   .header-toggles{ gap: 12px; }
@@ -915,7 +855,6 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
     top: -12px; right: -12px; border-width: 4px;
   }
 
-  /* max-width и max-height одинаковые — поле остаётся квадратным */
   .grid{ max-width: 680px; max-height: 680px; padding: 10px; gap: 3px; border-radius: 20px; }
   .cell{ border-radius: 7px; }
 
@@ -923,9 +862,6 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
   .word-list{ max-height: 140px; gap: 12px; }
 }
 
-/* ============================================================
-   ШИРОКИЕ СЕНСОРНЫЕ ЭКРАНЫ — крупнее список слов под полем
-   ============================================================ */
 @media (min-width: 900px) and (pointer: coarse){
   #game .panel-heading{ font-size: 1.5rem; padding-bottom: 16px; }
   #game .word-chip{
@@ -935,11 +871,6 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
   #game .word-chip.found{ padding: 18px 14px; }
 }
 
-/* ============================================================
-   СЕНСОРНЫЕ ЭКРАНЫ В ГОРИЗОНТАЛИ — раскладка та же вертикальная,
-   но списки слов превращаются в компактные прокручиваемые строки,
-   чтобы игровое поле оставалось крупным.
-   ============================================================ */
 @media (min-width: 900px) and (pointer: coarse) and (orientation: landscape){
   #game .word-list{
     flex:0 0 auto; flex-wrap:nowrap;
@@ -957,12 +888,6 @@ h2{font-size:clamp(1.25rem, 4.5vw, 1.7rem); letter-spacing:.02em; text-shadow:0 
   #game .word-chip.found{ padding:8px 12px; }
 }
 
-/* ============================================================
-   ОБВОДКА ТЕКСТА
-   Фон игры — переливающийся градиент, поэтому текст местами
-   сливался с ним. Обводка приподнимает буквы над фоном.
-   Ширина задана в em и потому масштабируется вместе со шрифтом.
-   ============================================================ */
 #menu h1,
 h2,
 .game-title,
@@ -980,33 +905,9 @@ h2,
 #shutdown h1,
 #shutdown p,
 .toast{
-  -webkit-text-stroke: 0.07em var(--ink);
-  paint-order: stroke fill;
   text-shadow: 0 1px 3px rgba(0,0,0,.55), 0 0 8px rgba(0,0,0,.28);
 }
-#menu h1,
-.game-title,
-h2,
-.overlay .box h2,
-.rules-box h2,
-#shutdown h1{
-  -webkit-text-stroke-width: 0.095em;
-}
-/* Внутри карточек и плашек обводка не нужна: там свой ровный фон,
-   а лишний контур только утолщает буквы. Сбрасываем обводку
-   управляемыми свойствами (а не сокращённой записью), иначе
-   у наследников сбросилась бы ширина и обводка пропала бы совсем.
-   Чипы и номера уровней исключены: им обводка нужна. */
-#shutdown,
-.overlay .box,
-#game .side-panel{
-  -webkit-text-stroke-color: transparent;
-  -webkit-text-stroke-width: 0;
-}
 
-/* ============================================================
-   ТЁМНАЯ ТЕМА
-   ============================================================ */
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
     --sky1:#1a1d22; --sky2:#282d34; --sky3:#22262c; --sky4:#2e343c; --sky5:#1e2228;
@@ -1027,10 +928,7 @@ h2,
     animation:bgFlow 18s ease-in-out infinite;
   }
   .cell{background:#3a4048; color:#e8ecf0;}
-  /* Контрастные состояния клеток для тёмной темы:
-     выделение — насыщенный жёлтый с чёрным текстом и белой обводкой,
-     найденные — ярко-синий с белым текстом и белой рамкой.
-     Оба состояния резко отличаются от тёмных клеток #3a4048. */
+
   .cell.selecting{
     background:#ffc400; color:#000000;
     box-shadow:0 0 0 2px #ffffff, 0 0 14px rgba(255,196,0,1);
@@ -1073,9 +971,6 @@ h2,
   .level-subtitle{color:rgba(255,255,255,.9);}
 }
 
-/* ============================================================
-   МОБИЛЬНАЯ ТЕМА — белые надписи для читаемости
-   ============================================================ */
 @media (max-width: 819px){
   h1,h2{
     color:#ffffff;
@@ -1270,9 +1165,6 @@ h2,
 </div>
 
 <script>
-/* ============================================================
-   🎨 ФАЙЛЫ И НАСТРОЙКИ
-   ============================================================ */
 const ASSETS = {
   theme: 'theme.mp3',
   themeStart: 3,
@@ -1282,15 +1174,8 @@ const ASSETS = {
   menuBgOpacity: 0.9
 };
 
-/* ============================================================
-   🏙️ ПУЛ ГОРОДОВ
-   Один общий список на всю игру: города России и мира.
-   Каждому уровню достаётся своё окно из 8 городов, поэтому
-   ни один город не повторяется ни внутри уровня, ни между уровнями.
-   Словарь расширен, чтобы хватило на 50 уровней (400 городов).
-   ============================================================ */
 const WORDS = [
-  /* --- Россия --- */
+
   'МОСКВА','НОВГОРОД','КАЗАНЬ','САМАРА','ТВЕРЬ','ПСКОВ','ТУЛА','СОЧИ',
   'КУРСК','БРЯНСК','ВОРОНЕЖ','ЛИПЕЦК','ТАМБОВ','ПЕНЗА','ПЕРМЬ','ИЖЕВСК',
   'ТЮМЕНЬ','ТОМСК','ИРКУТСК','ЯКУТСК','ХАБАРОВСК','ОРЕНБУРГ','АСТРАХАНЬ','ВОЛГОГРАД',
@@ -1314,7 +1199,7 @@ const WORDS = [
   'МИРНЫЙ','ЛЕНСК','УДАЧНЫЙ','ОЛЕКМИНСК','ПЕВЕК','БИЛИБИНО','ПРОВИДЕНИЯ','ПАЛАНА',
   'ВИЛЮЧИНСК','ЕЛИЗОВО','КЛЮЧИ','СОБОЛЕВО','НОВОАЛТАЙСК','ЗАРИНСК','СЛАВГОРОД','ЯРОВОЕ',
   'ЗМЕИНОГОРСК','ГОРНЯК','СОВЕТСК','ЧЕРНЯХОВСК','ГУСЕВ','БАЛТИЙСК','СВЕТЛЫЙ','ПИОНЕРСКИЙ',
-  /* --- Добор по России (для 50 уровней) --- */
+
   'КЛИН','ЗАРАЙСК','КОЛОМНА','МОЖАЙСК','ВЕРЕЯ','БОРОВСК','МАЛОЯРОСЛАВЕЦ','МЕДЫНЬ',
   'ЮХНОВ','ТАРУСА','КОЗЕЛЬСК','МЕЩОВСК','ЛЮДИНОВО','СУХИНИЧИ','ЖИЗДРА','БЕЛЕВ',
   'ПЛАВСК','ЕФРЕМОВ','ДОНСКОЙ','АЛЕКСИН','УЗЛОВАЯ','СЕВЕРСК','НОВОМОСКОВСК','ДУБНА',
@@ -1338,7 +1223,7 @@ const WORDS = [
   'БОГДАНОВИЧ','БОГДАНОВИЧ','АРТЕМОВСКИЙ','КАМЫШЛОВ','РЕЖ','АЛАПАЕВСК','ИРБИТ','ТАЛИЦА',
   'ТУРИНСК','КАМЕНСКУРАЛЬСКИЙ','БОГДАНОВИЧ','ВЕРХНЯЯПЫШМА','СРЕДНЕУРАЛЬСК','НИЖНЯЯТУРА','КУШВА','КРАСНОУРАЛЬСК',
   'КИРОВГРАД','БЕРЕЗОВСКИЙ','АСБЕСТ','СЫСЕРТЬ','ПОЛЕВСКОЙ','ДЕГТЯРСК','НОВОУРАЛЬСК','БОГДАНОВИЧ',
-  /* --- Европа --- */
+
   'ПАРИЖ','ЛОНДОН','РИМ','ПРАГА','ВЕНА','БЕРЛИН','МАДРИД','ЛИССАБОН',
   'АФИНЫ','ОСЛО','ХЕЛЬСИНКИ','СТОКГОЛЬМ','КОПЕНГАГЕН','АМСТЕРДАМ','БРЮССЕЛЬ','ЦЮРИХ',
   'ЖЕНЕВА','МИЛАН','ВЕНЕЦИЯ','ФЛОРЕНЦИЯ','НЕАПОЛЬ','БАРСЕЛОНА','СЕВИЛЬЯ','ЛИОН',
@@ -1352,7 +1237,7 @@ const WORDS = [
   'ВРОЦЛАВ','БРАТИСЛАВА','КОШИЦЕ','ДЕБРЕЦЕН','СЕГЕД','КЛУЖ','ПЛОВДИВ','ВАРНА',
   'БУРГАС','НИШ','НОВИСАД','МАРИБОР','СПЛИТ','ДУБРОВНИК','ПОДГОРИЦА','ДУРРЕС',
   'БРЕИЛА','ГАЛАТИ','ЯССЫ','ТИМИШОАРА','КОНСТАНЦА','ЛУГАНСК','ДОНЕЦК','ХАРЬКОВ',
-  /* --- Азия --- */
+
   'ТОКИО','ПЕКИН','ШАНХАЙ','СЕУЛ','ХАНОЙ','БАНГКОК','МАНИЛА','ДЖАКАРТА',
   'ДЕЛИ','МУМБАЙ','КАЛЬКУТТА','КАРАЧИ','ДАККА','КАБУЛ','ТЕГЕРАН','БАГДАД',
   'ДАМАСК','БЕЙРУТ','АММАН','ДОХА','МАСКАТ','КУВЕЙТ','ОСАКА','КИОТО',
@@ -1361,12 +1246,12 @@ const WORDS = [
   'ЛАХОР','ИСЛАМАБАД','ТАШКЕНТ','САМАРКАНД','БУХАРА','АЛМАТЫ','БИШКЕК','ДУШАНБЕ',
   'АШХАБАД','БАКУ','ЕРЕВАН','ТБИЛИСИ','БАТУМИ','АСТАНА','КАРАГАНДА','АКТОБЕ',
   'АТЫРАУ','ШЫМКЕНТ','ПАВЛОДАР','ФУКУОКА','СЕНДАЙ','НАХИЧЕВАНЬ','СИАН','ЧАНЧУНЬ',
-  /* --- Африка --- */
+
   'КАИР','ЛАГОС','АБУДЖА','АККРА','ДАКАР','АЛЖИР','ТУНИС','ТРИПОЛИ',
   'ХАРТУМ','НАЙРОБИ','ЛУАНДА','КИНШАСА','КАСАБЛАНКА','МАРАКЕШ','БАМАКО','КОНАКРИ',
   'МОГАДИШО','КАМПАЛА','КИГАЛИ','ХАРАРЕ','ГАБОРОНЕ','ВИНДХУК','МАПУТУ','ДОДОМА',
   'ЛИЛОНГВЕ','ПОРТЛУИ','МОРОНИ','МОМБАСА','АСМЭРА','ДЖИБУТИ','БАНГИ','БИСАУ',
-  /* --- Америка, Австралия, Океания --- */
+
   'ЧИКАГО','БОСТОН','СИЭТЛ','ДЕНВЕР','ТОРОНТО','ВАНКУВЕР','МОНРЕАЛЬ','ОТТАВА',
   'КАЛГАРИ','ХЬЮСТОН','ДАЛЛАС','ФЕНИКС','МАЙАМИ','МЕХИКО','ГАВАНА','ЛИМА',
   'САНТЬЯГО','БОГОТА','КАРАКАС','КИТО','ЛАПАС','МОНТЕВИДЕО','БРАЗИЛИА','РЕСИФИ',
@@ -1381,9 +1266,6 @@ const TOTAL_HINTS = 3;
 const GRID_SIZE = 12;
 const WORDS_PER_LEVEL = 8;
 
-/* ============================================================
-   СОХРАНЕНИЕ ПРОГРЕССА
-   ============================================================ */
 const STORAGE_KEY = 'wordSearchCities_v1';
 
 let completed = new Set();
@@ -1438,9 +1320,6 @@ function resetProgress(){
   );
 }
 
-/* ============================================================
-   🖼 ФОН МЕНЮ
-   ============================================================ */
 (function applyMenuBackground(){
   if (!ASSETS.menuBg) { document.body.classList.add('no-menu-bg'); return; }
   function trySet(src, onFail){
@@ -1462,9 +1341,6 @@ function resetProgress(){
   });
 })();
 
-/* ============================================================
-   ДЕКОР
-   ============================================================ */
 (function spawnDecor(){
   const layer = document.querySelector('.bg-decor');
   if (!layer) return;
@@ -1547,12 +1423,6 @@ function buildLevelGrid(){
   document.getElementById('progressBar').style.width = (done / TOTAL_LEVELS * 100) + '%';
 }
 
-/* ============================================================
-   🧩 ГЕНЕРАТОР УРОВНЯ
-   Один общий перемешанный порядок пула: уровень берёт из него
-   окно из 8 городов. Окна соседних уровней не пересекаются,
-   поэтому повторов не бывает ни внутри уровня, ни между уровнями.
-   ============================================================ */
 const POOL_ORDER = (() => {
   const rng = mulberry32(0x5C17A7);
   const arr = [...WORDS];
@@ -1575,8 +1445,6 @@ const CARDINAL = [[0,1],[1,0],[0,-1],[-1,0]];
 const NODE_BUDGET = 30000;        // предел перебора на одну попытку укладки
 const ATTEMPTS_PER_WORD = 70;     // сколько вариантов укладки пробуем для слова
 
-/* Слово можно положить, только если все его клетки свободны
-   и не касаются чужих букв даже углом. */
 function canPlace(owner, cells, N){
   for (let i = 0; i < cells.length; i++){
     const r = cells[i][0], c = cells[i][1];
@@ -1606,7 +1474,6 @@ function generateOnce(words, salt){
   const placed = [];
   let budget = NODE_BUDGET;
 
-  /* Варианты укладки: прямая линия или один изгиб буквой «Г». */
   function layoutOptions(word){
     const out = [];
     const L = word.length;
@@ -1633,7 +1500,6 @@ function generateOnce(words, salt){
     return out;
   }
 
-  /* Перебор с возвратом: если слово не встало — откатываем предыдущее. */
   function search(idx){
     if (idx === sorted.length) return true;
     const word = sorted[idx];
@@ -1654,14 +1520,13 @@ function generateOnce(words, salt){
 
   const grid = Array.from({length:N}, () => Array(N).fill(null));
   placed.forEach(({word, cells}) => cells.forEach((p, i) => { grid[p[0]][p[1]] = word[i]; }));
-  /* Пустые клетки заполняем случайными буквами. */
+
   for (let r = 0; r < N; r++) for (let c = 0; c < N; c++)
     if (grid[r][c] === null) grid[r][c] = ALPHA[Math.floor(rng()*ALPHA.length)];
 
   return {grid, placed};
 }
 
-/* Уровень генерируется один раз и запоминается — повторный вход мгновенный. */
 const levelCache = new Map();
 function generateLevel(level){
   if (levelCache.has(level)) return levelCache.get(level);
@@ -1698,12 +1563,10 @@ function sizeGrid(){
   const w=wrap.clientWidth, h=wrap.clientHeight;
   if(!w||!h) return;
   const size=Math.max(160, Math.min(w, h, 820));
-  /* Задаём предел, а не жёсткий размер: поле остаётся квадратным
-     (aspect-ratio) и никогда не выходит за границы отведённой области. */
+
   gridEl.style.maxWidth=size+'px';
   gridEl.style.maxHeight=size+'px';
-  /* --gs — фактический размер игрового поля. От него считаются высота
-     сервисной панели и размеры её внутренних элементов (широкий ПК). */
+
   if(gameEl) gameEl.style.setProperty('--gs', size+'px');
   const cs=getComputedStyle(gridEl);
   const pad=(parseFloat(cs.paddingLeft)||0)+(parseFloat(cs.paddingRight)||0);
@@ -1842,9 +1705,6 @@ function levelComplete(){
   if(wasNew && allDone) playFound();
 }
 
-/* ============================================================
-   УКАЗАТЕЛЬ
-   ============================================================ */
 const gridEl = document.getElementById('grid');
 
 gridEl.addEventListener('pointerdown', e=>{
@@ -1878,9 +1738,6 @@ gridEl.addEventListener('lostpointercapture', endPointer);
 gridEl.addEventListener('touchstart', e=>{ if(e.cancelable) e.preventDefault(); }, { passive: false });
 gridEl.addEventListener('touchmove', e=>{ if(e.cancelable) e.preventDefault(); }, { passive: false });
 
-/* ============================================================
-   🎵 АУДИО
-   ============================================================ */
 function playCustomMusic(){
   if (!customAudioEl) return;
   if (!musicOn || gameShutdown) return;
@@ -1905,7 +1762,7 @@ function pauseCustomMusic(){
     try { customAudioEl.currentTime = MUSIC_START_AT; } catch(e){}
     if (actx && musicOn && !gameShutdown) playCustomMusic();
   }, { once: true });
-  /* Трек доиграл — возвращаемся к вступлению и играем снова. */
+
   customAudioEl.addEventListener('ended', () => {
     try { customAudioEl.currentTime = MUSIC_START_AT; } catch(e){}
     if (musicOn && !gameShutdown) {
@@ -2030,9 +1887,6 @@ function useHint(){
   hintsLeft--; updateHintUI(); saveProgress();
 }
 
-/* ============================================================
-   🚪 ВЫХОД
-   ============================================================ */
 function exitGame(){
   saveProgress();
   gameShutdown = true;
@@ -2055,9 +1909,6 @@ function exitGame(){
 }
 document.getElementById('btnReopen').onclick = () => { location.reload(); };
 
-/* ============================================================
-   ОБРАБОТЧИКИ
-   ============================================================ */
 document.querySelectorAll('button').forEach(b=>{
   b.addEventListener('click', ()=>{
     if (gameShutdown) return;
@@ -2106,9 +1957,6 @@ function closeRules(){
   try{ localStorage.setItem(STORAGE_KEY+'_rulesSeen','1'); }catch(e){}
 }
 
-/* ============================================================
-   ИНИЦИАЛИЗАЦИЯ
-   ============================================================ */
 loadProgress();
 updateToggleUI();
 updateHintUI();
